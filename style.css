@@ -1,3 +1,44 @@
+@font-face {
+    font-family: Bree;
+    src: url(".fonts/BreeSerif-Regular.ttf");
+}
+
 body {
-    
+    margin: 0px;
+    padding: 0px;
+}
+
+#title {
+    margin:0px;
+    font-family: Bree;
+    letter-spacing: 2px;
+    text-align: center;
+    font-size: 68px;
+    margin: 22px 0px;
+}
+
+#title + hr {
+    margin-bottom: 22px;
+}
+
+.functions{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: center;
+    gap: 150px;
+    margin-bottom: 60px;
+}
+
+.option{
+    width: 168px;
+    height: 60px;
+    border-radius: 30px;
+    font-size: 30px;
+}
+
+.cards {
+    width:80%;
+    margin: 0px auto;
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
 }
