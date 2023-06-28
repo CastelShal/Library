@@ -1,23 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css" />
-    <!-- <script src="script.js" defer></script> -->
-    <title>Library</title>
-</head>
-<body>
-    <h1 id="title">Library App</h1>
-    <hr style="width:60%; border:1px solid black;" />
-    <div class="functions">
-        <button class="option"> Add
-        </button>
-        <button class="option">Sort </button>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style.css" />
+        <link href="https://api.fontshare.com/v2/css?f[]=general-sans@1&display=swap" rel="stylesheet">
+        <script src="script.js" defer></script>
+        <title>Library</title>
+    </head>
+    <body>
+        <h1 id="title">Library App</h1>
+        <hr style="width:60%; border:1px solid black;" />
+        <div class="functions">
+            <button class="option" id="book-add"><img src="./icons/book-plus.svg"/>Add
+            </button>
+            <button class="option" id="book-sort"><img src="./icons/sort-variant.svg"/>Sort </button>
+        </div>
+        <div class="card-wrapper">
+            <div class="cards">
+                <div class="card">
+                <div class="desc" style="display: flex; flex-flow: column nowrap;">
+                    <h1 style="flex:2;align-self: center;">Harry Potter and the Half Blood Prince</h1>
+                    <h2 style="flex:1">J.K. Rowling</h2>
+                </div>
+            </div>
+            <div class="card">
+                <div class="desc" style="display: flex; flex-flow: column nowrap;">
+                    <h1 style="flex:2;align-self: center;">Harry Potter and the Half Blood Prince</h1>
+                    <h2 style="flex:1">J.K. Rowling</h2>
+                </div>
+            </div>
+            <div class="card">
+                <div class="desc" style="display: flex; flex-flow: column nowrap;">
+                    <h1 style="flex:2;align-self: center;">Harry Potter and the Half Blood Prince</h1>
+                    <h2 style="flex:1">J.K. Rowling</h2>
+                </div>
+            </div>
+            <div class="card">
+                <div class="desc" style="display: flex; flex-flow: column nowrap;">
+                    <h1 style="flex:2;align-self: center;">Harry Potter and the Half Blood Prince</h1>
+                    <h2 style="flex:1">J.K. Rowling</h2>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="cards">
-       <button></button>
+    <div class="page-wrap none"></div>
+    <div class="pop-up none">
+        <h1>Add new Book</h1>
+        <div class="details">
+            Name:
+            <input type="text" name="name" id="name">
+            Author:
+            <input type="text" name="auth" id="auth">
+            Pages:
+            <input type="number" name="pg" id="pages">
+            Completed:
+            <input type="checkbox" name="done" id="done">
+        </div>
+        <div class="pop-buttons">
+            <button class="option">Add
+            </button>
+            <button class="option">Discard
+            </button>
+        </div>
     </div>
 </body>
 </html>
