@@ -63,6 +63,7 @@ function hidePopUp(_clean){
     }
 }
 
+//Event listeners
 sort.addEventListener('click', handler.sortBooks.bind(handler));
 
 addButton.addEventListener('click', ()=>{
@@ -90,54 +91,12 @@ discard.addEventListener('click', hidePopUp.bind(this, [true]));
 
 
 function Card(){
-    // //Create element shells
-    // const card = document.createElement('div');
-    // const desc = document.createElement('div');
-    // const h1 = document.createElement('h1');
-    // const h2 = document.createElement('h2');
-    // const pages = document.createElement('div');
-    // const topbar = document.createElement('div');
-    // const clearButton = document.createElement('button');
-    // const readButton = document.createElement('button');
-
-    // // Add styling classes
-    // topbar.classList.add('top-bar')
-    // pages.classList.add("pages");
-    // card.classList.add('card');
-    // desc.classList.add('desc');
-    // readButton.classList.add('card-btn');
-    // clearButton.classList.add('card-btn');
-
-    // //Assemble the elements
-    // topbar.appendChild(clearButton);
-    // topbar.appendChild(readButton);
-    // topbar.appendChild(pages);
-    // desc.appendChild(h1);
-    // desc.appendChild(h2);
-    // card.appendChild(topbar);
-    // card.appendChild(desc);
-
     const card = cardTemplate.cloneNode(true);
     const readButton = card.querySelector('#check');
     const clearButton = card.querySelector('#rem');
     const h1 = card.querySelector('h1');
     const h2 = card.querySelector('h2');
     const pages = card.querySelector('.pages');
-
-    console.log(card, readButton);
-
-    // readButton.appendChild((()=> {
-    // const elem = document.createElement('img');
-    // elem.setAttribute('src',"./icons/book-check.svg");
-    // return elem;
-    // })())
-
-//     clearButton.appendChild(
-//         (()=> {
-//         const elem = document.createElement('img');
-//         elem.setAttribute('src',"./icons/book-remove.svg");
-//         return elem})()
-// )
 
     clearButton.onclick = function() {
         const target = this.parentElement.parentElement;
@@ -191,5 +150,4 @@ handler.addBook(constructBook("Twelve Rules for Life", "Jordan Peterson", 89, fa
 handler.addBook(constructBook("Atomic Habits", "Joooooo", 89, false));
 handler.addBook(constructBook("Meditations", "Joooooo", 89, false));
 handler.addBook(constructBook("Yeahhhhhh", "Joooooo", 89, false));
-
 handler.refreshAll();
