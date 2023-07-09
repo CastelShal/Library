@@ -10,7 +10,6 @@ const sort = document.getElementById("head-sort");
 
 const handler = {
     counter : 0,
-    asc_sort : false,
     library : [],
 
     addBook(book){
@@ -23,18 +22,20 @@ const handler = {
     removeBook(id){
         for (let i = 0; i < this.library.length; i++) {
             if( this.library[i].card.getAttribute('data-id') == id ){
-                console.log();
                 this.library[i].card.remove();
-                this.library.splice(i);
+                this.library.splice(i,1);
                 break;
             }
         }
     },
     
-    readBook(id){
-        const book = this.library.find(book => book.card.getAttribute('data-id') == id);
-        if(!book) return;
-        book.pages.textContent = book.totalPages + "/" + book.totalPages;
+    readBook(id, _pages){
+        for (let i = 0; i < this.library.length; i++) {
+            if( this.library[i].card.getAttribute('data-id') == id ){
+                this.library[i].readPages = _pages ?? this.library[i].tPages;
+                break;
+            }
+        }
     },
 
     refreshAll(){
@@ -44,7 +45,7 @@ const handler = {
 
     sortBooks(){
         if( !this.asc_sort ){
-            this.library = this.library.sort((a,b) => a.h1.textContent.localeCompare(b.h1.textContent));
+            this.library = this.library.sort((a,b) => a.name.localeCompare(b.name));
             this.refreshAll();
         }
     }
@@ -89,60 +90,100 @@ discard.addEventListener('click', hidePopUp.bind(this, [true]));
 
 
 function Card(){
-    this.card = document.createElement('div');
-    this.desc = document.createElement('div');
-    this.h1 = document.createElement('h1');
-    this.h2 = document.createElement('h2');
-    this.pages = document.createElement('div');
-    this.topbar = document.createElement('div');
-    this.clearButton = document.createElement('button');
-    this.readButton = document.createElement('button');
+    // //Create element shells
+    // const card = document.createElement('div');
+    // const desc = document.createElement('div');
+    // const h1 = document.createElement('h1');
+    // const h2 = document.createElement('h2');
+    // const pages = document.createElement('div');
+    // const topbar = document.createElement('div');
+    // const clearButton = document.createElement('button');
+    // const readButton = document.createElement('button');
 
-    this.topbar.classList.add('top-bar')
-    this.pages.classList.add("pages");
-    this.card.classList.add('card');
-    this.desc.classList.add('desc');
-    this.readButton.classList.add('card-btn');
-    this.readButton.appendChild((()=> {
-        const elem = document.createElement('img');
-        elem.setAttribute('src',"./icons/book-check.svg");
-        return elem;}
-        )()
-)
-    this.clearButton.classList.add('card-btn');
-    this.clearButton.appendChild(
-        (()=> {
-        const elem = document.createElement('img');
-        elem.setAttribute('src',"./icons/book-remove.svg");
-        return elem})()
-)
+    // // Add styling classes
+    // topbar.classList.add('top-bar')
+    // pages.classList.add("pages");
+    // card.classList.add('card');
+    // desc.classList.add('desc');
+    // readButton.classList.add('card-btn');
+    // clearButton.classList.add('card-btn');
 
-    this.clearButton.onclick = ev => {
-        const id = this.card.getAttribute('data-id');
-        handler.removeBook(id);   
+    // //Assemble the elements
+    // topbar.appendChild(clearButton);
+    // topbar.appendChild(readButton);
+    // topbar.appendChild(pages);
+    // desc.appendChild(h1);
+    // desc.appendChild(h2);
+    // card.appendChild(topbar);
+    // card.appendChild(desc);
+
+    const card = cardTemplate.cloneNode(true);
+    const readButton = card.querySelector('#check');
+    const clearButton = card.querySelector('#rem');
+    const h1 = card.querySelector('h1');
+    const h2 = card.querySelector('h2');
+    const pages = card.querySelector('.pages');
+
+    console.log(card, readButton);
+
+    // readButton.appendChild((()=> {
+    // const elem = document.createElement('img');
+    // elem.setAttribute('src',"./icons/book-check.svg");
+    // return elem;
+    // })())
+
+//     clearButton.appendChild(
+//         (()=> {
+//         const elem = document.createElement('img');
+//         elem.setAttribute('src',"./icons/book-remove.svg");
+//         return elem})()
+// )
+
+    clearButton.onclick = function() {
+        const target = this.parentElement.parentElement;
+        target.remove(); 
+        handler.removeBook(target.getAttribute('data-id'))
     }
 
-    this.readButton.onclick = ev => {
-        const pages = this.pages.textContent.split("/")[1];
-        this.pages.textContent = `${pages} / ${pages}`
+    readButton.onclick = function() {
+        handler.readBook(this.parentElement.parentElement.getAttribute('data-id'))
     }
 
+    return { 
+        card,
+        h1,
+        h2,
+        pages,
+        tPages : 0,
+        rPages : 0,
+        set name(value){
+            this.h1.textContent = value;
+        },
+        get name(){
+            return this.h1.textContent;
+        },
+        set author(value){
+            this.h2.textContent = value;
+        },
+        set readPages(value){
+            this.rPages = value;
+            this.pages.textContent = value + "/" + this.tPages;
+        },
+
+        set totalPages(value){
+            this.tPages = value;
+            this.pages.textContent = this.rPages + "/" + value;
+        }
+        
+    }
 }
 
 function constructBook(name, author, totalPages, done){
-    const elem = new Card();
-    elem.h1.textContent = name;
-    elem.h2.textContent = author;
-    elem.pages.textContent = (done ? totalPages:0) + " / " + totalPages;
-
-    elem.topbar.appendChild(elem.clearButton);
-    elem.topbar.appendChild(elem.readButton);
-    elem.topbar.appendChild(elem.pages);
-    elem.desc.appendChild(elem.h1);
-    elem.desc.appendChild(elem.h2);
-    elem.card.appendChild(elem.topbar);
-    elem.card.appendChild(elem.desc);
-
+    const elem = Card();
+    elem.name = name;
+    elem.author = author;
+    elem.readPages = done ? totalPages:0;
+    elem.totalPages = totalPages;
     return elem;
 }
 
@@ -150,4 +191,5 @@ handler.addBook(constructBook("Twelve Rules for Life", "Jordan Peterson", 89, fa
 handler.addBook(constructBook("Atomic Habits", "Joooooo", 89, false));
 handler.addBook(constructBook("Meditations", "Joooooo", 89, false));
 handler.addBook(constructBook("Yeahhhhhh", "Joooooo", 89, false));
+
 handler.refreshAll();
